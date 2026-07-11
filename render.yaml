@@ -1,0 +1,32 @@
+services:
+  # ─── FastAPI Backend ─────────────────────────────────────────────────────────
+  - type: web
+    name: wellness-center-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 8000
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.5-flash
+      - key: PORT
+        value: "8000"
+
+  # ─── Streamlit Admin Dashboard ──────────────────────────────────────────────
+  - type: web
+    name: wellness-center-dashboard
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run dashboard.py --server.port 8501 --server.headless true --server.address 0.0.0.0
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: PORT
+        value: "8501"
